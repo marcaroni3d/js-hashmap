@@ -1,1 +1,3 @@
-# js-hashmap
+# Hashmap
+
+Hashmap data structure practice.
