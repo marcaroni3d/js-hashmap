@@ -70,13 +70,71 @@ function HashMap() {
         }
     };
 
+    const length = () => {
+        return storage.reduce((accumulated, current) => accumulated + current.length, 0);
+    };
+
+    const clear = () => {
+        storage.forEach((element) => element.splice(0));
+    };
+
+    const keys = () => {
+        let array = storage.reduce(
+            (accumulated, current) =>
+              accumulated.concat(
+                current.reduce(
+                  (accumulatedKeys, currentCell) =>
+                    accumulatedKeys.concat(currentCell[0]),
+                  []
+                )
+              ),
+            []
+        )
+        return array
+    };
+
+    const values = () => {
+        let array = storage.reduce(
+            (accumulated, current) =>
+              accumulated.concat(
+                current.reduce(
+                  (accumulatedValues, currentCell) =>
+                    accumulatedValues.concat(currentCell[1]),
+                  []
+                )
+              ),
+            []
+        )
+        return array
+    };
+
+    const entries = () => {
+        let array = storage.reduce(
+            (accumulated, current) =>
+              accumulated.concat(
+                current.reduce(
+                  (accumulatedEntries, currentCell) =>
+                    accumulatedEntries.concat(currentCell),
+                  []
+                )
+              ),
+            []
+        )
+        return array
+    };
+
     return {
         print,
         hash,
         set,
         get,
         has,
-        remove
+        remove,
+        length,
+        clear,
+        keys,
+        values,
+        entries
     }
 }
 
@@ -85,5 +143,4 @@ myHash.set('waldo', 'person')
 myHash.set('fido', 'dog')
 myHash.set('rex', 'dinosaur')
 myHash.set('tux', 'penguin')
-console.log(myHash.get('tux'))
-myHash.print()
+console.log(myHash.entries())
