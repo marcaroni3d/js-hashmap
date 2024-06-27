@@ -1,5 +1,5 @@
 function HashMap() {
-    const storageLimit = 4;
+    let storageLimit = 4;
     let storage = [];
 
     this.print = () => {
@@ -15,8 +15,32 @@ function HashMap() {
         return hashCode % max;
     };
 
+    const calculateLoadFactor = () => {
+        const occupied = storage.reduce(
+            (accumulated, current) =>
+                current.length !== 0 ? accumulated + 1 : accumulated, 
+        )
+        return occupied
+    };
+
+    const loadFactorHandler = () => {
+        if (calculateLoadFactor() < 0.8) {
+            return;
+        }
+
+        const oldEntries = entries();
+        storageLimit *= 2;
+        const newStorage = Array(storageLimit)
+            .fill(null)
+            .map(() => []);
+        storage = newStorage;
+        oldEntries.forEach((element) => set(element.key, element.value))
+    }
+
     const set = (key, value) => {
         let index = hash(key, storageLimit);
+        loadFactorHandler();
+
         if (storage[index] === undefined) {
             storage[index] = [
                 [key, value]
@@ -126,6 +150,8 @@ function HashMap() {
     return {
         print,
         hash,
+        calculateLoadFactor,
+        loadFactorHandler,
         set,
         get,
         has,
@@ -143,4 +169,5 @@ myHash.set('waldo', 'person')
 myHash.set('fido', 'dog')
 myHash.set('rex', 'dinosaur')
 myHash.set('tux', 'penguin')
-console.log(myHash.entries())
+
+console.log(myHash.print())
